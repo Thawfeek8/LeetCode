@@ -44,13 +44,14 @@ class Solution {
                 }
 
             }
+
             for(int i=0;i<garbage.length;i++){
                 if(i==0){
-                gval=gval+g[i];
-                pval=pval+p[i];
-                mval=mval+m[i];
+                gval=g[i];
+                pval=p[i];
+                mval=m[i];
                 
-            }
+                }
             else{
                 if(i<=gpoint){
                 gval=gval+(g[i]+travel[i-1]);
