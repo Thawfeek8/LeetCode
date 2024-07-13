@@ -1,84 +1,52 @@
 class Solution {
-    
-    public int strongPasswordChecker(String password) {
-        // Convert the password string to a character array for easy iteration.
-        char[] c = password.toCharArray();
-        int n = c.length;
-
-        // Initialize requirements based on password length.
-        int addreq = 0; // Required additions to meet minimum length.
-        int delreq = 0; // Required deletions to meet maximum length.
-        int fillme = 0; // Requirements for missing types of characters (digits, uppercase, lowercase).
-        int nut = 0; // Tracks number of modifications made to reduce repeated sequences.
-
-        // Set requirements based on the current length of the password.
-        if (n < 6) addreq = 6 - n;
-        if (n > 20) delreq = n - 20;
+   
         
-        // Temporary character to store the last processed character.
-        char temp = '@';
-
-        // Flags to check presence of digit, uppercase and lowercase characters.
-        boolean digitp = false;
-        boolean upperp = false;
-        boolean lowerp = false;
-
-        int np = 0; // Current sequence length.
-        int repchel = 0; // Unused variable, can be removed.
-
-        // Priority queue to store lengths of sequences where characters repeat.
-        // It sorts primarily by the sequence length modulo 3, to optimize the number of deletions required.
-        Queue<Integer> delqueue = new PriorityQueue<>((a, b) -> a % 3 - b % 3);
-
-        // Iterate through the password to detect character sequences and character types.
-        for (char ch : c) {
-            if (ch == temp) {
-                np++;
-            } else {
-                if (np >= 3) {
-                    delqueue.offer(np);
-                }
-                np = 1;
-                temp = ch;
-            }
-
-            // Check and update the presence of digit, uppercase, and lowercase.
-            if (!digitp && Character.isDigit(ch)) digitp = true;
-            if (!upperp && Character.isUpperCase(ch)) upperp = true;
-            if (!lowerp && Character.isLowerCase(ch)) lowerp = true;
-        }
-
-        // Offer the last sequence to the queue if it's a repeating sequence.
-        if (np >= 3) {
-            delqueue.offer(np);
-        }
+     public int strongPasswordChecker(String s) {
+    int res = 0, a = 1, A = 1, d = 1;
+    char[] carr = s.toCharArray();
+    int[] arr = new int[carr.length];
         
-        // Increment `fillme` for each missing character type.
-        if (!digitp) fillme++;
-        if (!upperp) fillme++;
-        if (!lowerp) fillme++;
-
-      
-        while (delreq > 0 && !delqueue.isEmpty()) {
-            int l = delqueue.peek();
-            int tobedeleted = l % 3 + 1;
-            if (tobedeleted > delreq) break;
-            else {
-                delreq -= tobedeleted;
-                l -= tobedeleted;
-                delqueue.poll();
-                nut += tobedeleted;
-                if (l >= 3) delqueue.offer(l);
-            }
-        }
-
-
-        int repreq = 0;
-        while (!delqueue.isEmpty()) {
-            repreq += delqueue.poll() / 3;
-        }
-
-        
-        return nut + delreq + Math.max(fillme, Math.max(addreq, repreq));
+    for (int i = 0; i < arr.length;) {
+        if (Character.isLowerCase(carr[i])) a = 0;
+        if (Character.isUpperCase(carr[i])) A = 0;
+        if (Character.isDigit(carr[i])) d = 0;    
+            
+        int j = i;
+        while (i < carr.length && carr[i] == carr[j]) i++;
+        arr[j] = i - j;
     }
+        
+    int total_missing = (a + A + d);
+
+    if (arr.length < 6) {
+        res += total_missing + Math.max(0, 6 - (arr.length + total_missing));
+            
+    } else {
+        int over_len = Math.max(arr.length - 20, 0), left_over = 0;
+        res += over_len;
+            
+        for (int k = 1; k < 3; k++) {
+            for (int i = 0; i < arr.length && over_len > 0; i++) {
+                if (arr[i] < 3 || arr[i] % 3 != (k - 1)) continue;
+                arr[i] -= Math.min(over_len, k);
+                over_len -= k;
+            }
+        }
+            
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] >= 3 && over_len > 0) {
+                int need = arr[i] - 2;
+                arr[i] -= over_len;
+                over_len -= need;
+            }
+                
+            if (arr[i] >= 3) left_over += arr[i] / 3;
+        }
+            
+        res += Math.max(total_missing, left_over);
+    }
+        
+    return res;
+}
+    
 }
