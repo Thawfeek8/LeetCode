@@ -17,7 +17,7 @@ class Solution {
     public List<Integer> survivedRobotsHealths(int[] positions, int[] healths, String directions) {
         List<Integer> result = new ArrayList<>();
         Robot[] robots = new Robot[positions.length];
-        List<Robot> stack = new ArrayList<>();
+        Stack<Robot> stack = new Stack<>();
 
         // Create an array of Robot objects
         for (int i = 0; i < positions.length; i++) {
@@ -29,33 +29,37 @@ class Solution {
 
         for (Robot robot : robots) {
             if (robot.direction == 'R') {
-                stack.add(robot);
+                stack.push(robot);
                 continue;
             }
-            // Collide with robots going right if any
-            while (!stack.isEmpty() && stack.get(stack.size() - 1).direction == 'R' && robot.health > 0) {
-                if (stack.get(stack.size() - 1).health == robot.health) {
-                    stack.remove(stack.size() - 1);
+            // Handle collisions for robots moving to the left
+            while (!stack.isEmpty() && stack.peek().direction == 'R' && robot.health > 0) {
+                Robot rightRobot = stack.peek();
+                if (rightRobot.health == robot.health) {
+                    stack.pop();
                     robot.health = 0;
-                } else if (stack.get(stack.size() - 1).health < robot.health) {
-                    stack.remove(stack.size() - 1);
+                } else if (rightRobot.health < robot.health) {
+                    stack.pop();
                     robot.health -= 1;
-                } else { // stack[-1].health > robot.health
-                    stack.get(stack.size() - 1).health -= 1;
+                } else { // rightRobot.health > robot.health
+                    rightRobot.health -= 1;
                     robot.health = 0;
                 }
             }
             if (robot.health > 0) {
-                stack.add(robot);
+                stack.push(robot);
             }
         }
 
-        stack.sort(Comparator.comparingInt(a -> a.index));
+        // Collect the remaining robots and sort them by their original indices
+        List<Robot> survivingRobots = new ArrayList<>(stack);
+        survivingRobots.sort(Comparator.comparingInt(a -> a.index));
 
-        for (Robot robot : stack) {
+        for (Robot robot : survivingRobots) {
             result.add(robot.health);
         }
 
         return result;
     }
 }
+
