@@ -9,10 +9,12 @@ class Solution {
 
     public static void findcombination(int i,int[] arr,List<Integer> ds
     ,int sum,List<List<Integer>> res){
-        if(i == arr.length){
+        if(i == arr.length){ return;
+                    }
+
             if(sum == 0){ 
                 res.add(new ArrayList<>(ds));
-            }
+            
             return;
         }
             //pick
