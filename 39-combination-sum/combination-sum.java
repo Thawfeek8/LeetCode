@@ -22,6 +22,7 @@ class Solution {
                 ds.add(arr[i]);
                 findcombination(i,arr,ds,sum-arr[i],res);
                 ds.remove(ds.size()-1);
+                
             }
             //not pick
             findcombination(i+1,arr,ds,sum,res);
