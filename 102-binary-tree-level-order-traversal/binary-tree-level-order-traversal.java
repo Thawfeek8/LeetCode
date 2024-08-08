@@ -15,7 +15,7 @@
  */
 class Solution {
     public List<List<Integer>> levelOrder(TreeNode root) {
-        List<List<Integer>> finalans=new ArrayList<List<Integer>>();
+        List<List<Integer>> finalans=new ArrayList<>();
         Queue<TreeNode> queue=new LinkedList<TreeNode>();
         if(root==null)return finalans;
         queue.offer(root);
