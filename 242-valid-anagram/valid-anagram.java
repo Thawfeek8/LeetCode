@@ -7,7 +7,7 @@ class Solution {
             raw[t.charAt(i)-'a']--;
         }
         for(int i=0;i<raw.length;i++){
-            if(raw[i]>0) return false;
+            if(raw[i]!=0) return false;
         } 
         return true;
 
