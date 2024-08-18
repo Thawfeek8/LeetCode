@@ -7,7 +7,9 @@ class Solution {
     static int ducati(int n, int[] dp){
         if(n==0||n==1) return 1;
         if(dp[n]!=-1) return dp[n];
-        dp[n] = ducati(n-1,dp)+ducati(n-2,dp);
+        int a = ducati(n-1,dp);
+        int b = ducati(n-2,dp);
+        dp[n] = a+b;
         return dp[n];
 
 
