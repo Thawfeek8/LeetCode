@@ -10,7 +10,7 @@
  */
 class Solution {
     public ListNode removeElements(ListNode head, int val) {
-        ListNode dummy = new ListNode(-1,null);
+        ListNode dummy = new ListNode(-12341,null);
         ListNode temp = dummy;
         while(head!=null){
             if(head.val!=val){
