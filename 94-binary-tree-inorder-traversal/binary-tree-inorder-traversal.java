@@ -13,15 +13,23 @@
  *     }
  * }
  */
-class Solution {List<Integer> list=new ArrayList<>();
+class Solution {
     public List<Integer> inorderTraversal(TreeNode root) {
-        
-        if(root==null){
-            return new ArrayList<>();
+         List<Integer> l = new ArrayList<>();
+        Stack<TreeNode> st = new Stack<>();
+        TreeNode dummy = root;
+        while(true){
+            if(dummy != null){
+                st.push(dummy);
+                dummy = dummy.left;
+            }
+            else{
+                if(st.isEmpty()) break;
+                dummy = st.pop();
+                l.add(dummy.val);
+                dummy = dummy.right;
+            }
         }
-       inorderTraversal(root.left);
-       list.add(root.val);
-       inorderTraversal(root.right);
-       return list; 
+        return l;
     }
 }
