@@ -15,14 +15,18 @@
  */
 class Solution {
     public int kthSmallest(TreeNode root, int k) {
-        ArrayList<Integer> l = new ArrayList<>();
-        call(root, l);
-        return l.get(k-1);
+        TreeSet<Integer> t = new TreeSet<>();
+        call(root, t);
+        for(int i=0;i<k-1;i++){
+            t.pollFirst();
+        }
+        return t.pollFirst();
     }
-    static void call(TreeNode root, ArrayList<Integer> l){
+    static void call(TreeNode root, TreeSet<Integer> l){
         if(root == null) return;
-        call(root.left, l);
+        
         l.add(root.val);
+        call(root.left, l);
         call(root.right, l);
     }
 }
