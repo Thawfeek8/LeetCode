@@ -1,29 +1,22 @@
-public class Solution {
+class Solution {
     public List<List<Integer>> combinationSum2(int[] candidates, int target) {
-        Set<List<Integer>> resultSet = new HashSet<>();
-        Arrays.sort(candidates); // Sort to handle duplicates
-        comb(0, candidates, target, resultSet, new ArrayList<>(), 0);
-        return new ArrayList<>(resultSet); // Convert Set back to List
+        List<List<Integer>> ans = new ArrayList<>();
+        List<Integer> l = new ArrayList<>();
+        Arrays.sort(candidates);
+        fun(0, ans, l, candidates, candidates.length, target);
+        return ans;
     }
-
-    private void comb(int i, int[] arr, int target, Set<List<Integer>> resultSet, List<Integer> ans, int sum) {
-        if (sum == target) {
-            resultSet.add(new ArrayList<>(ans)); // Add combination to Set
+    static void fun(int idx, List<List<Integer>> ans, List<Integer> l, int[]arr, int n, int target){
+        if(target == 0){
+            ans.add(new ArrayList<>(l));
             return;
         }
-        if (i >= arr.length || sum > target) {
-            return;
+        for(int i=idx;i<n;i++){
+            if(i>idx && arr[i] == arr[i-1]) continue;
+            if(arr[i]>target) break;
+            l.add(arr[i]);
+            fun(i+1, ans, l, arr, n, target-arr[i]);
+            l.remove(l.size()-1);
         }
-
-        // Include the current number
-        ans.add(arr[i]);
-        comb(i + 1, arr, target, resultSet, ans, sum + arr[i]);
-        ans.remove(ans.size() - 1);
-
-        // Skip duplicates
-        while (i + 1 < arr.length && arr[i] == arr[i + 1]) {
-            i++;
-        }
-        comb(i + 1, arr, target, resultSet, ans, sum);
     }
 }
