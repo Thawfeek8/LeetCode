@@ -11,20 +11,53 @@ class Solution {
         }
         int[] delRow = {-1, 0, 1, 0};
         int[] delCol = {0, 1, 0, -1};
-        dfs(sr, sc, image, copy, delRow, delCol, iniColor, newColor, n, m);
+        //if(newColor != iniColor)
+        bfs(sr, sc, image, copy, delRow, delCol, iniColor, newColor, n, m);
         return copy;
     }
-    static void dfs(int row, int col, int[][] image, int[][] copy, int[]delRow,
-                    int[] delCol, int iniColor, int newColor, int n, int m){
+    // static void dfs(int row, int col, int[][] image, int[][] copy, int[]delRow,
+    //                 int[] delCol, int iniColor, int newColor, int n, int m){
             
-            copy[row][col] = newColor;
-            for(int i=0;i<4;i++){
-                int nr = row+delRow[i];
-                int nc = col+delCol[i];
-                if(nr>=0 && nr<n && nc>=0 && nc<m && image[nr][nc] == iniColor && 
-                        copy[nr][nc] != newColor)
-                        dfs(nr, nc, image, copy, delRow, delCol, iniColor, newColor, n, m);
-            }
+    //         copy[row][col] = newColor;
+    //         for(int i=0;i<4;i++){
+    //             int nr = row+delRow[i];
+    //             int nc = col+delCol[i];
+    //             if(nr>=0 && nr<n && nc>=0 && nc<m && image[nr][nc] == iniColor && 
+    //                     copy[nr][nc] != newColor)
+    //                     dfs(nr, nc, image, copy, delRow, delCol, iniColor, newColor, n, m);
+    //         }
 
+    // }
+
+    static void bfs(int row, int col, int[][] image, int[][] copy, int[]delRow,
+                     int[] delCol, int iniColor, int newColor, int n, int m){
+        
+            Queue<Pair> q = new LinkedList<>();
+            q.offer(new Pair(row, col));
+            while(!q.isEmpty()){
+                int a = q.peek().first;
+                int b = q.peek().second;
+                q.poll();
+                copy[a][b] = newColor;
+                for(int i=0;i<4;i++){
+                    int nr = a+delRow[i];
+                    int nc = b+delCol[i];
+                    if(nr>=0 && nr<n && nc>=0 && nc<m && image[nr][nc] == iniColor && 
+                        copy[nr][nc] != newColor){
+                            
+                            q.offer(new Pair(nr, nc));
+                    }
+            }
+            }
+                     }        
+
+
+}
+class Pair{
+    int first;
+    int second;
+    public Pair(int first, int second){
+        this.first = first;
+        this.second = second;
     }
 }
