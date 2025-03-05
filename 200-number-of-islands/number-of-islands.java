@@ -16,7 +16,7 @@ class Solution {
     }
 
         public static void dfs(int i,int j,char[][] grid,int row,int col){
-            if(i<0 || i>=row || j<0 || j>=col || grid[i][j]=='0'){
+            if(i==-1 || i>=row || j==-1 || j>=col || grid[i][j]=='0'){
                 return   ;
             }
             grid[i][j] = '0';
