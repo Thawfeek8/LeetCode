@@ -1,29 +1,23 @@
 class Solution {
     public int missingNumber(int[] nums) {
+        // using cyclic sort
+
         int n = nums.length;
-        int ans = 0;
-        for(int i=0;i<n;i++){
-            ans ^= nums[i];
-            ans ^= i+1;
+        int i=0;
+        while(i<n){
+            int correctIndex = nums[i];
+            if(nums[i] < n && nums[i] != nums[correctIndex]) swap(nums, i, correctIndex);
+            else i++;
         }
-        
-        return ans;
+
+        for(int index=0;index<n;index++){
+            if(index != nums[index]) return index;
+        }
+        return n;
+    }
+    static void swap(int[]arr, int i, int correctIndex){
+        int temp = arr[i];
+        arr[i] = arr[correctIndex];
+        arr[correctIndex] = temp;
     }
 }
-
-// class Solution {
-//     public int missingNumber(int[] nums) {
-//         int[] nums1 = new int[nums.length+1];
-//         int ans = 0;
-//         Arrays.fill(nums1,-1);
-//         for(int i=0;i<nums.length;i++){
-//             nums1[nums[i]] = nums[i];
-//         }
-//         for(int i=0;i<nums1.length;i++){
-//             if(nums1[i] == -1){
-//                 ans = i;
-//             }
-//         }
-//         return ans;
-//     }
-// }
